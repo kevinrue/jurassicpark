@@ -74,6 +74,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           ./bin/micromamba shell init -s bash -r ~/micromamba
+          source ~/.bashrc
 
       - name: Test micromamba
         if: runner.os == 'Linux'
