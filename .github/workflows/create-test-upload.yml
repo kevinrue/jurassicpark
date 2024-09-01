@@ -75,27 +75,25 @@ jobs:
       - name: Test micromamba (Unix)
         if: runner.os == 'Linux'
         run: |
-          source ~/.bashrc
           micromamba
-        shell: bash {0}
+        shell: bash -el {0}
 
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe --help
+          micromamba
         shell: pwsh {0}
 
       - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
         run: |
-          source ~/.bashrc
           micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1 
-        shell: bash {0}
+        shell: bash -el {0}
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo==0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1
+          micromamba env create -n scvelo -c bioconda -c conda-forge scvelo==0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1
         shell: pwsh {0}
 
       - name: Checkout Repository
@@ -104,38 +102,34 @@ jobs:
       - name: Test scvelo tutorial (Unix; scvelo >= 0.3.0)
         if: runner.os == 'Linux'
         run: |
-          source ~/.bashrc
           micromamba activate scvelo
           python tests/scvelo/0.3.0.py
-        shell: bash {0}
+        shell: bash -el {0}
 
       - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell hook -s powershell -p C:\Users\runneradmin\micromamba | Out-String | Invoke-Expression
-          #C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell reinit
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe activate scvelo
+          micromamba activate scvelo
           python tests/scvelo/0.2.5.py
         shell: pwsh {0}
 
       - name: Export environment (Unix)
         if: runner.os == 'Linux'
         run: |
-          source ~/.bashrc
           micromamba env export -n scvelo > ~/scvelo.yaml
-        shell: bash {0}
+        shell: bash -el {0}
 
       - name: Export environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env export -n scvelo > ~/scvelo.yaml
+          micromamba env export -n scvelo > ~/scvelo.yaml
         shell: pwsh {0}
 
       - name: Display environment (Unix)
         if: runner.os == 'Linux'
         run: |
           cat ~/scvelo.yaml
-        shell: bash {0}
+        shell: bash -el {0}
 
       - name: Display environment (Windows)
         if: runner.os == 'Windows'
