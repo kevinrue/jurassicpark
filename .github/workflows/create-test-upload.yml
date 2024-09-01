@@ -66,18 +66,11 @@ jobs:
 
     steps:
 
-      - name: Install micromamba (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
-        shell: bash {0}
-
-      - name: Install micromamba (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell init -s powershell -p C:\Users\runneradmin\micromamba
-        shell: pwsh {0}
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: >-
+            bash
+            powershell
 
       - name: Test micromamba (Unix)
         if: runner.os == 'Linux'
@@ -119,8 +112,8 @@ jobs:
       - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell hook -s powershell | Out-String | Invoke-Expression
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell reinit
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell hook -s powershell -p C:\Users\runneradmin\micromamba | Out-String | Invoke-Expression
+          #C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe shell reinit
           C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe activate scvelo
           python tests/scvelo/0.2.5.py
         shell: pwsh {0}
