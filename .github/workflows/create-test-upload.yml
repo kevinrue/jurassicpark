@@ -138,12 +138,14 @@ jobs:
         shell: pwsh {0}
 
       - name: Upload artifact (Unix)
+        if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-latest.yaml
           path: ~/scvelo.yaml
 
       - name: Upload artifact (Windows)
+        if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: windows-latest.yaml
