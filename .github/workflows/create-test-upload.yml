@@ -52,8 +52,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: ubuntu-latest, r: 'devel', bioc: '3.20', shell: 'bash -el {0}', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - { os: windows-latest, r: 'devel', bioc: '3.20', shell: 'powershell'}
+          - { os: ubuntu-latest, r: 'devel', bioc: '3.20', shell: 'bash', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - { os: windows-latest, r: 'devel', bioc: '3.20', shell: 'pwsh'}
           ## Check https://github.com/r-lib/actions/tree/master/examples
           ## for examples using the http-user-agent
     env:
@@ -71,9 +71,16 @@ jobs:
           init-shell: ${{ matrix.config.shell }}
 
       - name: Test micromamba (Unix)
+        if: runner.os == 'Linux'
         run: |
           micromamba
-        shell: ${{ matrix.config.shell }}
+        shell: bash -el {0}
+
+      - name: Test micromamba (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          micromamba
+        shell: pwsh {0}
 
       - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
@@ -108,7 +115,13 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           micromamba env export -n scvelo > ~/scvelo.yaml
-        shell:  ${{ matrix.config.shell }}
+        shell: bash -el {0}
+
+      - name: Export environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          micromamba env export -n scvelo > ~/scvelo.yaml
+        shell: pwsh {0}
 
       - name: Display environment (Unix)
         if: runner.os == 'Linux'
