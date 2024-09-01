@@ -101,35 +101,60 @@ jobs:
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo=0.2.5
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo=0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1
         shell: pwsh {0}
 
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Test scvelo tutorial
+      - name: Test scvelo tutorial (Unix; scvelo >= 0.3.0)
         if: runner.os == 'Linux'
         run: |
           source ~/.bashrc
           micromamba activate scvelo
-          python tests/scvelo/ubuntu-latest.py
+          python tests/scvelo/0.3.0.py
         shell: bash {0}
 
-      - name: Export environment
+      - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
+        if: runner.os == 'Windows'
+        run: |
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe activate scvelo
+          python tests/scvelo/0.2.5.py
+        shell: pwsh {0}
+
+      - name: Export environment (Unix)
         if: runner.os == 'Linux'
         run: |
           source ~/.bashrc
           micromamba env export -n scvelo > ~/scvelo.yaml
         shell: bash {0}
 
-      - name: Display environment
+      - name: Export environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env export -n scvelo > ~/scvelo.yaml
+        shell: pwsh {0}
+
+      - name: Display environment (Unix)
         if: runner.os == 'Linux'
         run: |
           cat ~/scvelo.yaml
         shell: bash {0}
 
-      - name: Upload artifact
+      - name: Display environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          type ~/scvelo.yaml
+        shell: pwsh {0}
+
+      - name: Upload artifact (Unix)
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-latest.yaml
+          path: ~/scvelo.yaml
+
+      - name: Upload artifact (Windows)
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-latest.yaml
           path: ~/scvelo.yaml
