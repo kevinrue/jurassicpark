@@ -75,7 +75,11 @@ jobs:
       - name: Install micromamba (Windows)
         if: runner.os == 'Windows'
         run: |
-          Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)
+          Invoke-Webrequest -URI https://micro.mamba.pm/api/micromamba/win-64/latest -OutFile micromamba.tar.bz2
+          tar xf micromamba.tar.bz2
+          
+          MOVE -Force Library\bin\micromamba.exe micromamba.exe
+          .\micromamba.exe --help
         shell: pwsh {0}
 
       - name: Test micromamba (Unix)
@@ -88,7 +92,8 @@ jobs:
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
         run: |
-          micromamba
+          .\micromamba.exe shell hook -s powershell | Out-String | Invoke-Expression
+          .\micromamba.exe --help
         shell: pwsh {0}
 
       - name: Install micromamba environment
