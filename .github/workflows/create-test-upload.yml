@@ -96,19 +96,18 @@ jobs:
           .\micromamba.exe --help
         shell: pwsh {0}
 
-      - name: Install micromamba environment
+      - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
         run: |
           source ~/.bashrc
           micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1 
         shell: bash {0}
 
-      - name: Install micromamba environment
-        if: runner.os == 'Linux'
+      - name: Install micromamba environment (Windows)
+        if: runner.os == 'Windows'
         run: |
-          source ~/.bashrc
-          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1 
-        shell: bash {0}
+          .\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo=0.2.5
+        shell: pwsh {0}
 
       - name: Checkout Repository
         uses: actions/checkout@v3
