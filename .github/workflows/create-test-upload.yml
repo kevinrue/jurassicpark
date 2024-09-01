@@ -119,6 +119,7 @@ jobs:
       - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
         if: runner.os == 'Windows'
         run: |
+          . C:\Users\runneradmin\Documents\WindowsPowerShell\profile.ps1
           C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe activate scvelo
           python tests/scvelo/0.2.5.py
         shell: pwsh {0}
