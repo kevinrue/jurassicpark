@@ -65,9 +65,12 @@ jobs:
 
     steps:
 
-      ## Set the R library to the directory matching the
-      ## R packages cache step further below when running on Docker (Linux).
       - name: Install micromamba
         if: runner.os == 'Linux'
         run: |
-          "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+          curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+
+      - name: Install micromamba
+        if: runner.os == 'Linux'
+        run: |
+          eval "$(./bin/micromamba shell hook -s posix)"
