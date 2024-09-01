@@ -53,6 +53,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, r: 'devel', bioc: '3.20', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - { os: macOS-latest, r: 'devel', bioc: '3.20'}
           - { os: windows-latest, r: 'devel', bioc: '3.20'}
           ## Check https://github.com/r-lib/actions/tree/master/examples
           ## for examples using the http-user-agent
@@ -66,18 +67,26 @@ jobs:
 
     steps:
 
-      - name: Set up micromamba (Unix)
+      - name: Set up micromamba (Ubuntu)
+        if: runner.os == 'Linux'
         uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: bash
 
+      - name: Set up micromamba (macOS-latest)
+        if: runner.os == 'macOS'
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: zsh
+
       - name: Set up micromamba (Windows)
+        if: runner.os == 'Windows'
         uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: powershell
 
       - name: Test micromamba (Unix)
-        if: runner.os == 'Linux'
+        if: runner.os != 'Windows'
         run: |
           micromamba
 
@@ -87,7 +96,7 @@ jobs:
           micromamba
         shell: pwsh {0}
 
-      - name: Install micromamba environment (Unix)
+      - name: Install micromamba environment (Ubuntu)
         if: runner.os == 'Linux'
         run: |
           micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1
@@ -101,7 +110,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Test scvelo tutorial (Unix; scvelo >= 0.3.0)
+      - name: Test scvelo tutorial (Ubuntu; scvelo >= 0.3.0)
         if: runner.os == 'Linux'
         run: |
           micromamba activate scvelo
@@ -114,7 +123,7 @@ jobs:
           python tests/scvelo/0.2.5.py
         shell: pwsh {0}
 
-      - name: Export environment (Unix)
+      - name: Export environment (Ubuntu)
         if: runner.os == 'Linux'
         run: |
           micromamba env export -n scvelo > ~/scvelo.yaml
@@ -125,7 +134,7 @@ jobs:
           micromamba env export -n scvelo > ~/scvelo.yaml
         shell: pwsh {0}
 
-      - name: Display environment (Unix)
+      - name: Display environment (Ubuntu)
         if: runner.os == 'Linux'
         run: |
           cat ~/scvelo.yaml
@@ -136,7 +145,7 @@ jobs:
           type ~/scvelo.yaml
         shell: pwsh {0}
 
-      - name: Upload artifact (Unix)
+      - name: Upload artifact (Ubuntu)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
