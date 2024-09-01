@@ -73,7 +73,7 @@ jobs:
         with:
           init-shell: bash
 
-      - name: Set up micromamba (macOS-latest)
+      - name: Set up micromamba (macOS)
         if: runner.os == 'macOS'
         uses: mamba-org/setup-micromamba@v1
         with:
@@ -96,10 +96,10 @@ jobs:
           micromamba
         shell: pwsh {0}
 
-      - name: Install micromamba environment (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Install micromamba environment (Unix)
+        if: runner.os != 'Windows'
         run: |
-          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1
+          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
@@ -110,14 +110,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Test scvelo tutorial (Ubuntu; scvelo >= 0.3.0)
-        if: runner.os == 'Linux'
+      - name: Test scvelo tutorial (Unix; scvelo == 0.3.2)
+        if: runner.os != 'Windows'
         run: |
           micromamba activate scvelo
-          python tests/scvelo/0.3.0.py
+          python tests/scvelo/0.3.2.py
         shell: bash -el {0}
 
-      - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
+      - name: Test scvelo tutorial (Windows; scvelo == 0.2.5)
         if: runner.os == 'Windows'
         run: |
           micromamba activate scvelo
@@ -125,7 +125,7 @@ jobs:
         shell: pwsh {0}
 
       - name: Export environment (Ubuntu)
-        if: runner.os == 'Linux'
+        if: runner.os != 'Windows'
         run: |
           micromamba env export -n scvelo > ~/scvelo.yaml
 
@@ -136,7 +136,7 @@ jobs:
         shell: pwsh {0}
 
       - name: Display environment (Ubuntu)
-        if: runner.os == 'Linux'
+        if: runner.os != 'Windows'
         run: |
           cat ~/scvelo.yaml
 
@@ -146,16 +146,8 @@ jobs:
           type ~/scvelo.yaml
         shell: pwsh {0}
 
-      - name: Upload artifact (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-latest.yaml
-          path: ~/scvelo.yaml
-
-      - name: Upload artifact (Windows)
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-latest.yaml
+          name: ${{ matrix.config.os }}.yaml
           path: ~/scvelo.yaml
