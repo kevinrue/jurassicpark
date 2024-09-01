@@ -80,7 +80,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           micromamba
-        shell: bash -el {0}
 
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
@@ -91,8 +90,7 @@ jobs:
       - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
         run: |
-          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1 
-        shell: bash -el {0}
+          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
@@ -108,7 +106,6 @@ jobs:
         run: |
           micromamba activate scvelo
           python tests/scvelo/0.3.0.py
-        shell: bash -el {0}
 
       - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
         if: runner.os == 'Windows'
@@ -121,7 +118,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           micromamba env export -n scvelo > ~/scvelo.yaml
-        shell: bash -el {0}
 
       - name: Export environment (Windows)
         if: runner.os == 'Windows'
@@ -133,7 +129,6 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           cat ~/scvelo.yaml
-        shell: bash -el {0}
 
       - name: Display environment (Windows)
         if: runner.os == 'Windows'
