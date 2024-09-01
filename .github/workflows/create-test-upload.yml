@@ -71,7 +71,7 @@ jobs:
         with:
           init-shell: bash
 
-      - name: Set up micromamba (Unix)
+      - name: Set up micromamba (Windows)
         uses: mamba-org/setup-micromamba@v1
         with:
           init-shell: powershell
