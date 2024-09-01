@@ -97,9 +97,14 @@ jobs:
         shell: pwsh {0}
 
       - name: Install micromamba environment (Unix)
-        if: runner.os != 'Windows'
+        if: runner.os == 'Linux'
         run: |
           micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
+
+      - name: Install micromamba environment (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          micromamba env create -n scvelo -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
