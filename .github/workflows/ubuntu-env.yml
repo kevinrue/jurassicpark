@@ -70,7 +70,12 @@ jobs:
         run: |
           curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
 
-      - name: Install micromamba
+      - name: Activate micromamba
         if: runner.os == 'Linux'
         run: |
           eval "$(./bin/micromamba shell hook -s posix)"
+
+      - name: Test micromamba
+        if: runner.os == 'Linux'
+        run: |
+          micromamba
