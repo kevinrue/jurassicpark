@@ -74,6 +74,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           eval "$(./bin/micromamba shell hook -s posix)"
+          micromamba
 
       - name: Test micromamba
         if: runner.os == 'Linux'
