@@ -77,7 +77,7 @@ jobs:
         if: runner.os == 'macOS'
         uses: mamba-org/setup-micromamba@v1
         with:
-          init-shell: zsh
+          init-shell: bash
 
       - name: Set up micromamba (Windows)
         if: runner.os == 'Windows'
