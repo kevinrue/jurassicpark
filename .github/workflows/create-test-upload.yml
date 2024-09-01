@@ -76,7 +76,6 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           Invoke-Expression ((Invoke-WebRequest -Uri https://micro.mamba.pm/install.ps1).Content)
-          .\micromamba.exe shell init -s powershell
         shell: pwsh {0}
 
       - name: Test micromamba (Unix)
@@ -89,7 +88,7 @@ jobs:
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
         run: |
-          .\micromamba.exe --help
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe --help
         shell: pwsh {0}
 
       - name: Install micromamba environment (Unix)
@@ -102,7 +101,7 @@ jobs:
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          .\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo=0.2.5
+          C:\Users\runneradmin\AppData\Local\micromamba\micromamba.exe env create -n scvelo -c bioconda -c conda-forge scvelo=0.2.5
         shell: pwsh {0}
 
       - name: Checkout Repository
