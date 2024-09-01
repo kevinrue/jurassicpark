@@ -95,3 +95,22 @@ jobs:
           micromamba activate scvelo
           python tests/scvelo/ubuntu-latest.py
         shell: bash {0}
+
+      - name: Export environment
+        if: runner.os == 'Linux'
+        run: |
+          source ~/.bashrc
+          micromamba env export -n scvelo > ~/scvelo.yaml
+        shell: bash {0}
+
+      - name: Export environment
+        if: runner.os == 'Linux'
+        run: |
+          cat ~/scvelo.yaml
+        shell: bash {0}
+
+      - name: Upload micromamba YAML file artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-latest.yaml
+          path: ~/scvelo.yaml
