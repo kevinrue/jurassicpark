@@ -103,13 +103,13 @@ jobs:
           micromamba env export -n scvelo > ~/scvelo.yaml
         shell: bash {0}
 
-      - name: Export environment
+      - name: Display environment
         if: runner.os == 'Linux'
         run: |
           cat ~/scvelo.yaml
         shell: bash {0}
 
-      - name: Upload micromamba YAML file artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu-latest.yaml
