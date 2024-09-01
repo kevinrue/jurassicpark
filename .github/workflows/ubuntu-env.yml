@@ -71,6 +71,12 @@ jobs:
           "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
         shell: bash {0}
 
+      - name: Activate micromamba
+        if: runner.os == 'Linux'
+        run: |
+          source ~/.bashrc
+        shell: bash {0}
+
       - name: Test micromamba
         if: runner.os == 'Linux'
         run: |
