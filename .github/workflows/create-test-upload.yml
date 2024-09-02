@@ -53,6 +53,7 @@ jobs:
       matrix:
         config:
           - { os: ubuntu-latest, r: 'devel', bioc: '3.20', cont: "bioconductor/bioconductor_docker:devel", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - { os: macOS-latest, r: 'devel', bioc: '3.20'}
           - { os: windows-latest, r: 'devel', bioc: '3.20'}
           ## Check https://github.com/r-lib/actions/tree/master/examples
           ## for examples using the http-user-agent
@@ -66,17 +67,28 @@ jobs:
 
     steps:
 
-      - uses: mamba-org/setup-micromamba@v1
+      - name: Set up micromamba (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: mamba-org/setup-micromamba@v1
         with:
-          init-shell: >-
-            bash
-            powershell
+          init-shell: bash
+
+      - name: Set up micromamba (macOS)
+        if: runner.os == 'macOS'
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: bash
+
+      - name: Set up micromamba (Windows)
+        if: runner.os == 'Windows'
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          init-shell: powershell
 
       - name: Test micromamba (Unix)
-        if: runner.os == 'Linux'
+        if: runner.os != 'Windows'
         run: |
           micromamba
-        shell: bash -el {0}
 
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
@@ -87,8 +99,12 @@ jobs:
       - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
         run: |
-          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo=0.3.2 scipy=1.13.1 
-        shell: bash -el {0}
+          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
+
+      - name: Install micromamba environment (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          micromamba env create -n scvelo -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
@@ -99,25 +115,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Test scvelo tutorial (Unix; scvelo >= 0.3.0)
-        if: runner.os == 'Linux'
+      - name: Test scvelo tutorial (Unix; scvelo == 0.3.2)
+        if: runner.os != 'Windows'
         run: |
           micromamba activate scvelo
-          python tests/scvelo/0.3.0.py
+          python tests/scvelo/0.3.2.py
         shell: bash -el {0}
 
-      - name: Test scvelo tutorial (Windows; scvelo <= 0.2.5)
+      - name: Test scvelo tutorial (Windows; scvelo == 0.2.5)
         if: runner.os == 'Windows'
         run: |
           micromamba activate scvelo
           python tests/scvelo/0.2.5.py
         shell: pwsh {0}
 
-      - name: Export environment (Unix)
-        if: runner.os == 'Linux'
+      - name: Export environment (Ubuntu)
+        if: runner.os != 'Windows'
         run: |
           micromamba env export -n scvelo > ~/scvelo.yaml
-        shell: bash -el {0}
 
       - name: Export environment (Windows)
         if: runner.os == 'Windows'
@@ -125,11 +140,10 @@ jobs:
           micromamba env export -n scvelo > ~/scvelo.yaml
         shell: pwsh {0}
 
-      - name: Display environment (Unix)
-        if: runner.os == 'Linux'
+      - name: Display environment (Ubuntu)
+        if: runner.os != 'Windows'
         run: |
           cat ~/scvelo.yaml
-        shell: bash -el {0}
 
       - name: Display environment (Windows)
         if: runner.os == 'Windows'
@@ -137,16 +151,8 @@ jobs:
           type ~/scvelo.yaml
         shell: pwsh {0}
 
-      - name: Upload artifact (Unix)
-        if: runner.os == 'Linux'
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ubuntu-latest.yaml
-          path: ~/scvelo.yaml
-
-      - name: Upload artifact (Windows)
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-latest.yaml
+          name: ${{ matrix.config.os }}.yaml
           path: ~/scvelo.yaml
