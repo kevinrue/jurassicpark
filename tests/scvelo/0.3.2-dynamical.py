@@ -16,7 +16,7 @@ scv.pp.filter_and_normalize(adata, min_shared_counts=20, n_top_genes=2000)
 sc.pp.neighbors(adata, n_pcs=30, n_neighbors=30)
 scv.pp.moments(adata, n_pcs=None, n_neighbors=None)
 
-scv.tl.recover_dynamics(adata, n_jobs=1)
+scv.tl.recover_dynamics(adata, n_jobs=1, backend='multiprocessing')
 
 scv.tl.velocity(adata, mode='dynamical')
 scv.tl.velocity_graph(adata)
