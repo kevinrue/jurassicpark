@@ -112,6 +112,28 @@ jobs:
           micromamba env create -n scvelo -c bioconda -c conda-forge scvelo==0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1
         shell: pwsh {0}
 
+      - name: Export environment (Ubuntu)
+        if: runner.os != 'Windows'
+        run: |
+          micromamba env export -n scvelo > ~/scvelo.yaml
+
+      - name: Export environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          micromamba env export -n scvelo > ~/scvelo.yaml
+        shell: pwsh {0}
+
+      - name: Display environment (Ubuntu)
+        if: runner.os != 'Windows'
+        run: |
+          cat ~/scvelo.yaml
+
+      - name: Display environment (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          type ~/scvelo.yaml
+        shell: pwsh {0}
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 
@@ -134,28 +156,6 @@ jobs:
         run: |
           micromamba activate scvelo
           python tests/scvelo/0.2.5.py
-        shell: pwsh {0}
-
-      - name: Export environment (Ubuntu)
-        if: runner.os != 'Windows'
-        run: |
-          micromamba env export -n scvelo > ~/scvelo.yaml
-
-      - name: Export environment (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          micromamba env export -n scvelo > ~/scvelo.yaml
-        shell: pwsh {0}
-
-      - name: Display environment (Ubuntu)
-        if: runner.os != 'Windows'
-        run: |
-          cat ~/scvelo.yaml
-
-      - name: Display environment (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          type ~/scvelo.yaml
         shell: pwsh {0}
 
       - name: Upload artifact
