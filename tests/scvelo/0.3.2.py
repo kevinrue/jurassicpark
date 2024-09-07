@@ -17,7 +17,7 @@ sc.pp.neighbors(adata, n_pcs=30, n_neighbors=30)
 scv.pp.moments(adata, n_pcs=None, n_neighbors=None)
 
 scv.tl.velocity(adata)
-scv.tl.velocity_graph(adata, show_progress_bar=False)
+scv.tl.velocity_graph(adata, n_jobs=1)
 scv.tl.velocity_pseudotime(adata)
 
 scv.tl.velocity_confidence(adata)
