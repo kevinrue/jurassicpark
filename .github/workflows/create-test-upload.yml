@@ -122,6 +122,13 @@ jobs:
           python tests/scvelo/0.3.2.py
         shell: bash -el {0}
 
+      - name: Test scvelo dynamical mode (Unix; scvelo == 0.3.2)
+        if: runner.os != 'Windows'
+        run: |
+          micromamba activate scvelo
+          python tests/scvelo/0.3.2-dynamical.py
+        shell: bash -el {0}
+
       - name: Test scvelo tutorial (Windows; scvelo == 0.2.5)
         if: runner.os == 'Windows'
         run: |
