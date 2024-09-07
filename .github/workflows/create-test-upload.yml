@@ -104,7 +104,7 @@ jobs:
       - name: Install micromamba environment (macOS)
         if: runner.os == 'macOS'
         run: |
-          micromamba env create -n scvelo -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1
+          micromamba env create -n scvelo -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1 loky==3.4.1
 
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
