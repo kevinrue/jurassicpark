@@ -13,3 +13,9 @@ scv.pp.log1p(adata)
 
 scv.pp.filter_and_normalize(adata, min_shared_counts=20, n_top_genes=2000)
 scv.pp.moments(adata, n_pcs=30, n_neighbors=30)
+
+scv.tl.velocity(adata)
+scv.tl.velocity_graph(adata, n_jobs=1)
+scv.tl.velocity_pseudotime(adata)
+
+scv.tl.velocity_confidence(adata)
