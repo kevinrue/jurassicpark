@@ -17,10 +17,10 @@ if __name__ == '__main__':
 	sc.pp.neighbors(adata, n_pcs=30, n_neighbors=30)
 	scv.pp.moments(adata, n_pcs=None, n_neighbors=None)
 	
-	scv.tl.recover_dynamics(adata, n_jobs=1)
+	scv.tl.recover_dynamics(adata)
 	
 	scv.tl.velocity(adata, mode='dynamical')
-	scv.tl.velocity_graph(adata, n_jobs=1)
+	scv.tl.velocity_graph(adata)
 	scv.tl.velocity_pseudotime(adata)
 	
 	scv.tl.latent_time(adata)
