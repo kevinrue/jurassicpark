@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	scv.pp.moments(adata, n_pcs=None, n_neighbors=None)
 	
 	scv.tl.velocity(adata)
-	scv.tl.velocity_graph(adata, n_jobs=1)
+	scv.tl.velocity_graph(adata)
 	scv.tl.velocity_pseudotime(adata)
 	
 	scv.tl.velocity_confidence(adata)

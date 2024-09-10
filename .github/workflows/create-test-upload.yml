@@ -109,7 +109,7 @@ jobs:
       - name: Install micromamba environment (Windows)
         if: runner.os == 'Windows'
         run: |
-          micromamba env create -n scvelo -c bioconda -c conda-forge scvelo==0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1
+          micromamba env create -n scvelo -c bioconda -c conda-forge scvelo==0.2.5 matplotlib==3.6.3 pandas==1.5.2 numpy==1.21.1 tqdm ipywidgets
         shell: pwsh {0}
 
       - name: Export environment (Ubuntu)
@@ -156,6 +156,13 @@ jobs:
         run: |
           micromamba activate scvelo
           python tests/scvelo/0.2.5.py
+        shell: pwsh {0}
+
+      - name: Test scvelo dynamical mode (Windows; scvelo == 0.2.5)
+        if: runner.os == 'Windows'
+        run: |
+          micromamba activate scvelo
+          python tests/scvelo/0.2.5-dynamical.py
         shell: pwsh {0}
 
       - name: Upload artifact
