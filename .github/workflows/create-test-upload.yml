@@ -99,7 +99,7 @@ jobs:
       - name: Install micromamba environment (Unix)
         if: runner.os == 'Linux'
         run: |
-          micromamba env create -n scvelo -c anaconda -c conda-forge -c bioconda scvelo==0.3.2 tqdm ipywidgets
+          micromamba env create -n scvelo -c conda-forge -c bioconda scvelo==0.3.2 scipy==1.13.1 tqdm==4.66.5 ipywidgets==8.1.2 libtiff=4.5.1 pillow=10.0.0
 
       - name: Install micromamba environment (macOS)
         if: runner.os == 'macOS'
