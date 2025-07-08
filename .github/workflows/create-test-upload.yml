@@ -103,7 +103,7 @@ jobs:
         run: |
           echo $SHELL
           pyenv --version
-        shell: pwsh {0}
+        shell: bash -el {0}
 
       # - name: Install micromamba environment (Unix)
       #   if: runner.os == 'Linux'
