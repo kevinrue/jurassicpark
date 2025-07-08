@@ -118,10 +118,18 @@ jobs:
           source ~/.bashrc
           pyenv --version
 
+      - name: whoami (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh {0}
+        run: |
+          whoami
+
       - name: Test pyenv (Windows)
         if: runner.os == 'Windows'
         shell: pwsh {0}
         run: |
+          $env:Path = "C:\Users\$whoami\.pyenv\pyenv-win\bin;"" + $env:Path
+          $env:Path = "C:\Users\$whoami\.pyenv\pyenv-win\shims;"" + $env:Path
           pyenv --version
 
       # - name: Install micromamba environment (Unix)
