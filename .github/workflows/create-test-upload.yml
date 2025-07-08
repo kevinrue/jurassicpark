@@ -84,14 +84,24 @@ jobs:
         run: |
           Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 
-      - name: Test pyenv (Unix)
-        if: runner.os != 'Windows'
+      - name: Test pyenv (Ubuntu)
+        if: runner.os == 'Linux'
         run: |
+          echo $SHELL
+          source ~/.bashrc
+          pyenv --version
+
+      - name: Test pyenv (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          echo $SHELL
+          source ~/.zshrc
           pyenv --version
 
       - name: Test micromamba (Windows)
         if: runner.os == 'Windows'
         run: |
+          echo $SHELL
           pyenv --version
         shell: pwsh {0}
 
