@@ -80,7 +80,7 @@ jobs:
           brew update
           brew install pyenv
 
-      - name: Instal pyenv (Windows)
+      - name: Install pyenv (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
