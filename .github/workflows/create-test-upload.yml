@@ -99,7 +99,7 @@ jobs:
         shell: bash -el {0}
         run: |
           echo $SHELL
-          source ~/.zshrc
+          source ~/.bashrc
           pyenv --version
 
       - name: Test micromamba (Windows)
