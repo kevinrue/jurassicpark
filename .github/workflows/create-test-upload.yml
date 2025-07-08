@@ -118,6 +118,7 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash -el {0}
         run: |
+          source .bashrc
           pyenv --version
 
       - name: Test pyenv (macOS)
