@@ -153,7 +153,7 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          exec "$SHELL"
+          source ~/.bashrc
           pyenv install --list | grep " 3\.1[12345]"
 
       # - name: Install micromamba environment (Unix)
