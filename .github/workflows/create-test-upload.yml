@@ -82,7 +82,7 @@ jobs:
 
       - name: Install pyenv (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
+        shell: pwsh {0}
         run: |
           Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 
@@ -120,6 +120,7 @@ jobs:
 
       - name: Test pyenv (Windows)
         if: runner.os == 'Windows'
+        shell: pwsh {0}
         run: |
           pyenv --version
 
