@@ -120,7 +120,6 @@ jobs:
 
       - name: Test pyenv (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
         run: |
           pyenv --version
 
