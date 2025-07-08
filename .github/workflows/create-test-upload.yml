@@ -149,6 +149,12 @@ jobs:
           exec "$SHELL"
           pyenv --version
 
+      - name: List python 3.1x (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          pyenv install --list | grep " 3\.1[12345]"
+
       # - name: Install micromamba environment (Unix)
       #   if: runner.os == 'Linux'
       #   run: |
