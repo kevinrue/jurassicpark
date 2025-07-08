@@ -102,34 +102,32 @@ jobs:
           echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
           echo 'eval "$(pyenv init - bash)"' >> ~/.bashrc
 
+      - name: Set up pyenv (Windows)
+        run: |
+          [System.Environment]::SetEnvironmentVariable('PYENV',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+          [System.Environment]::SetEnvironmentVariable('PYENV_ROOT',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+          [System.Environment]::SetEnvironmentVariable('PYENV_HOME',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
+          [System.Environment]::SetEnvironmentVariable('path', $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" + $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" + [System.Environment]::GetEnvironmentVariable('path', "User"),"User")
+
+#$env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+#$env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+
       - name: Test pyenv (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -el {0}
         run: |
-          echo $SHELL
-          source ~/.bashrc
           pyenv --version
 
       - name: Test pyenv (macOS)
         if: runner.os == 'macOS'
         shell: bash -el {0}
         run: |
-          echo $SHELL
-          source ~/.bashrc
           pyenv --version
-
-      - name: whoami (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh {0}
-        run: |
-          whoami
 
       - name: Test pyenv (Windows)
         if: runner.os == 'Windows'
         shell: pwsh {0}
         run: |
-          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
-          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
           pyenv --version
 
       # - name: Install micromamba environment (Unix)
