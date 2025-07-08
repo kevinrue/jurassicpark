@@ -75,7 +75,7 @@ jobs:
 
       - name: Install pyenv (macOS)
         if: runner.os == 'macOS'
-        shell: zsh
+        shell: bash -el {0}
         run: |
           brew update
           brew install pyenv
