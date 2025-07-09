@@ -189,6 +189,7 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           pyenv virtualenv 3.13.5 jurassicpark-env
+          tree .
 
       - name: Install scvelo (Ubuntu)
         if: runner.os == 'Linux'
