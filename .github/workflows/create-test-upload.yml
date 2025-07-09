@@ -172,19 +172,25 @@ jobs:
             xvfb \
             zlib1g-dev
 
-      - name: Install python (Ubuntu)
-        if: runner.os == 'Linux'
-        shell: bash -leo pipefail {0}
-        run: |
-          pyenv install 3.13.5
-          pyenv global 3.13.5
-          which pip
+      # - name: Install python (Ubuntu)
+      #   if: runner.os == 'Linux'
+      #   shell: bash -leo pipefail {0}
+      #   run: |
+      #     pyenv install 3.13.5
+      #     pyenv global 3.13.5
+      #     which pip
 
-      - name: Create virtual environment (Ubuntu)
+      # - name: Create virtual environment (Ubuntu)
+      #   if: runner.os == 'Linux'
+      #   shell: bash -leo pipefail {0}
+      #   run: |
+      #     python -m venv jurassicpark-env
+
+      - name: Install python in a virtual environment (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
         run: |
-          python -m venv jurassicpark-env
+          pyenv virtualenv 3.13.5 jurassicpark-env
 
       - name: Install scvelo (Ubuntu)
         if: runner.os == 'Linux'
