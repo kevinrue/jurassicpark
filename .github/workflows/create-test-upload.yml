@@ -93,6 +93,13 @@ jobs:
       #   run: |
       #     Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win-venv/main/bin/install-pyenv-win-venv.ps1" -OutFile "$HOME\install-pyenv-win-venv.ps1"; &"$HOME\install-pyenv-win-venv.ps1"
 
+      - name: Install pyenv-virtualenv (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          brew update
+          brew install pyenv-virtualenv
+
       - name: Set up pyenv (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
