@@ -136,12 +136,6 @@ jobs:
           $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
           pyenv --version
 
-      - name: Create virtual environment (Ubuntu)
-        if: runner.os == 'Linux'
-        shell: bash -leo pipefail {0}
-        run: |
-          python -m venv jurassicpark-env
-
       - name: List python 3.1x (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
@@ -185,6 +179,12 @@ jobs:
           pyenv install 3.13.5
           pyenv global 3.13.5
           which pip
+
+      - name: Create virtual environment (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash -leo pipefail {0}
+        run: |
+          python -m venv jurassicpark-env
 
       - name: Install scvelo (Ubuntu)
         if: runner.os == 'Linux'
