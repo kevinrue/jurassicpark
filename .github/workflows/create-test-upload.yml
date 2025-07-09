@@ -122,17 +122,17 @@ jobs:
       #     $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
       #     $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
 
-      - name: Test pyenv (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Test pyenv (Ubuntu, macOS)
+        if: runner.os != 'Windows'
         shell: bash -leo pipefail {0}
         run: |
           pyenv --version
 
-      - name: Test pyenv (macOS)
-        if: runner.os == 'macOS'
-        shell: bash
-        run: |
-          pyenv --version
+      #- name: Test pyenv (macOS)
+      #  if: runner.os == 'macOS'
+      #  shell: bash
+      #  run: |
+      #    pyenv --version
 
       - name: Test pyenv (Windows)
         if: runner.os == 'Windows'
@@ -192,8 +192,8 @@ jobs:
             xvfb \
             zlib1g-dev
 
-      - name: Install python (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Install python (Ubuntu, macOS)
+        if: runner.os != 'Windows'
         shell: bash -leo pipefail {0}
         run: |
           pyenv install 3.13.5
@@ -209,8 +209,8 @@ jobs:
           $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
           pyenv install 3.13.5
 
-      - name: Install python in a virtual environment (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Install python in a virtual environment (Ubuntu, macOS)
+        if: runner.os != 'Windows'
         shell: bash -leo pipefail {0}
         run: |
           pyenv virtualenv 3.13.5 jurassicpark-env
