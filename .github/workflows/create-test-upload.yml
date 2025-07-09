@@ -189,7 +189,6 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           pyenv virtualenv 3.13.5 jurassicpark-env
-          ls -ltah
 
       - name: Confirm presence of virtual environment (Ubuntu)
         if: runner.os == 'Linux'
