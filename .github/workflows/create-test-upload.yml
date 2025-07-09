@@ -172,13 +172,11 @@ jobs:
             xvfb \
             zlib1g-dev
 
-      # - name: Install python (Ubuntu)
-      #   if: runner.os == 'Linux'
-      #   shell: bash -leo pipefail {0}
-      #   run: |
-      #     pyenv install 3.13.5
-      #     pyenv global 3.13.5
-      #     which pip
+      - name: Install python (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv install 3.13.5
 
       # - name: Create virtual environment (Ubuntu)
       #   if: runner.os == 'Linux'
