@@ -131,10 +131,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh {0}
         run: |
-          #[System.Environment]::SetEnvironmentVariable('PYENV',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
-          #[System.Environment]::SetEnvironmentVariable('PYENV_ROOT',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
-          #[System.Environment]::SetEnvironmentVariable('PYENV_HOME',$env:USERPROFILE + "\.pyenv\pyenv-win\","User")
-          #[System.Environment]::SetEnvironmentVariable('path', $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" + $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" + [System.Environment]::GetEnvironmentVariable('path', "User"),"User")
           $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
           $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
           $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
@@ -155,6 +151,44 @@ jobs:
         run: |
           source ~/.bashrc
           pyenv install --list | grep " 3\.1[12345]"
+
+      - name: Install python build dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          apt update
+          apt-get -yq install \
+            build-essential \
+            pkg-config \
+            ccache \
+            gdb \
+            lcov \
+            libb2-dev \
+            libbz2-dev \
+            libffi-dev \
+            libgdbm-dev \
+            libgdbm-compat-dev \
+            liblzma-dev \
+            libncurses5-dev \
+            libreadline6-dev \
+            libsqlite3-dev \
+            libssl-dev \
+            libzstd-dev \
+            lzma \
+            lzma-dev \
+            strace \
+            tk-dev \
+            uuid-dev \
+            xvfb \
+            zlib1g-dev
+
+      - name: Install python (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          source ~/.bashrc
+          pyenv install 3.13.5
+
 
       # - name: Install micromamba environment (Unix)
       #   if: runner.os == 'Linux'
