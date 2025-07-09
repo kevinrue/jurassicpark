@@ -184,7 +184,14 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           pyenv install 3.13.5
+          pyenv global 3.13.5
+          which pip
 
+      - name: Install scvelo (Ubuntu)
+        if: runner.os == 'Linux'
+        shell: bash -leo pipefail {0}
+        run: |
+          pip install scvelo==0.3.3
 
       # - name: Install micromamba environment (Unix)
       #   if: runner.os == 'Linux'
