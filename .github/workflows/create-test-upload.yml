@@ -260,7 +260,7 @@ jobs:
           pyenv activate jurassicpark-env
           python -m pip list --format=freeze
 
-      - name: List installed packages (Ubuntu)
+      - name: List installed packages (Windows)
         if: runner.os == 'Windows'
         shell: pwsh {0}
         run: |
