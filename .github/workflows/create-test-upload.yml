@@ -191,7 +191,7 @@ jobs:
         run: |
           pyenv install 3.13.5
 
-      - name: Test pyenv (Windows)
+      - name: Install python (Windows)
         if: runner.os == 'Windows'
         shell: pwsh {0}
         run: |
