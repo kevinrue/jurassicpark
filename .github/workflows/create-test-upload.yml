@@ -86,11 +86,12 @@ jobs:
         run: |
           Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 
-      - name: Install pyenv-win-venv (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh {0}
-        run: |
-          Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win-venv/main/bin/install-pyenv-win-venv.ps1" -OutFile "$HOME\install-pyenv-win-venv.ps1"; &"$HOME\install-pyenv-win-venv.ps1"
+# does not work due to interactive prompt during installation
+      # - name: Install pyenv-win-venv (Windows)
+      #   if: runner.os == 'Windows'
+      #   shell: pwsh {0}
+      #   run: |
+      #     Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win-venv/main/bin/install-pyenv-win-venv.ps1" -OutFile "$HOME\install-pyenv-win-venv.ps1"; &"$HOME\install-pyenv-win-venv.ps1"
 
       - name: Set up pyenv (Ubuntu)
         if: runner.os == 'Linux'
@@ -214,17 +215,17 @@ jobs:
         run: |
           pyenv virtualenv 3.13.5 jurassicpark-env
 
-      - name: Install python in a virtual environment (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh {0}
-        run: |
-          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
-          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
-          $env:Path = 'C:\Users\runneradmin\.pyenv-win-venv\bin;' + $env:Path
-          $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
-          $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
-          $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
-          pyenv-venv install 3.13.5 jurassicpark-env
+      # - name: Install python in a virtual environment (Windows)
+      #   if: runner.os == 'Windows'
+      #   shell: pwsh {0}
+      #   run: |
+      #     $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+      #     $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+      #     $env:Path = 'C:\Users\runneradmin\.pyenv-win-venv\bin;' + $env:Path
+      #     $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+      #     $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+      #     $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+      #     pyenv-venv install 3.13.5 jurassicpark-env
 
       - name: Confirm presence of virtual environment (Ubuntu)
         if: runner.os == 'Linux'
@@ -240,11 +241,35 @@ jobs:
           pyenv activate jurassicpark-env
           pip install --no-cache-dir scvelo==0.3.3
 
+      - name: Install scvelo (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh {0}
+        run: |
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+          $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          pyenv shell 3.13.5
+          pip install --no-cache-dir scvelo==0.3.3
+
       - name: List installed packages (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
         run: |
           pyenv activate jurassicpark-env
+          python -m pip list --format=freeze
+
+      - name: List installed packages (Ubuntu)
+        if: runner.os == 'Windows'
+        shell: pwsh {0}
+        run: |
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+          $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          pyenv shell 3.13.5
           python -m pip list --format=freeze
 
       # - name: Install micromamba environment (Unix)
