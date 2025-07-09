@@ -102,18 +102,18 @@ jobs:
           echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
           echo 'eval "$(pyenv init - bash)"' >> ~/.bash_profile
 
-      - name: Set up pyenv (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh {0}
-        run: |
-          # see <https://pyenv-win.github.io/pyenv-win/docs/installation.html#powershell>
-          # and <https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#example-of-adding-a-system-path>
-          chcp 65001 #set code page to utf-8
-          echo ("PYENV=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
-          echo ("PYENV_ROOT=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
-          echo ("PYENV_HOME=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
-          $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
-          $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+      # - name: Set up pyenv (Windows)
+      #   if: runner.os == 'Windows'
+      #   shell: pwsh {0}
+      #   run: |
+      #     # see <https://pyenv-win.github.io/pyenv-win/docs/installation.html#powershell>
+      #     # and <https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#example-of-adding-a-system-path>
+      #     chcp 65001 #set code page to utf-8
+      #     echo ("PYENV=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
+      #     echo ("PYENV_ROOT=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
+      #     echo ("PYENV_HOME=" + $env:USERPROFILE + "\.pyenv\pyenv-win\") >> $env:GITHUB_ENV
+      #     $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+      #     $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
 
       - name: Test pyenv (Ubuntu)
         if: runner.os == 'Linux'
@@ -179,6 +179,17 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
         run: |
+          pyenv install 3.13.5
+
+      - name: Test pyenv (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh {0}
+        run: |
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+          $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
           pyenv install 3.13.5
 
       - name: Install python in a virtual environment (Ubuntu)
