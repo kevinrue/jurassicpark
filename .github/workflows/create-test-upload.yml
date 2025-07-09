@@ -153,7 +153,7 @@ jobs:
           $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
           $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
           $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
-          pyenv install --list | grep " 3\.1[12345]"
+          pyenv install -l | findstr 3.1
 
       - name: Install python build dependencies (Ubuntu)
         if: runner.os == 'Linux'
