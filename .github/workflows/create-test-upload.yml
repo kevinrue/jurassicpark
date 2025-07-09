@@ -194,12 +194,14 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
         run: |
+          source jurassicpark-env/bin/activate
           pip install --no-cache-dir scvelo==0.3.3
 
       - name: List installed packages (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
         run: |
+          source jurassicpark-env/bin/activate
           python -m pip list --format=freeze
 
       # - name: Install micromamba environment (Unix)
