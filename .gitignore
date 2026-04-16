@@ -3,4 +3,6 @@
 .RData
 .Ruserdata
 jurassicpark.Rproj
+install-pyenv-win.ps1
+.vscode/
 data/
