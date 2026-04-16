@@ -67,6 +67,9 @@ jobs:
 
     steps:
 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Install pyenv (Ubuntu)
         if: runner.os == 'Linux'
         shell: bash -leo pipefail {0}
@@ -246,7 +249,7 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           pyenv activate jurassicpark-env
-          pip install --no-cache-dir scvelo==0.3.3
+          python -m pip install scvelo==0.3.3 anndata==0.11.4 scipy==1.15.2 zarr==2.18.7 tqdm ipywidgets
 
       - name: Install scvelo (Windows)
         if: runner.os == 'Windows'
@@ -317,15 +320,24 @@ jobs:
       #     type ~/scvelo.yaml
       #   shell: pwsh {0}
 
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v3
+      - name: Test scvelo tutorial (macOS; scvelo == 0.3.3)
+        if: runner.os == 'macOS'
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv activate jurassicpark-env
+          python tests/scvelo/0.3.3.py
 
-      # - name: Test scvelo tutorial (Unix; scvelo == 0.3.3)
-      #   if: runner.os != 'Windows'
-      #   run: |
-      #     micromamba activate scvelo
-      #     python tests/scvelo/0.3.3.py
-      #   shell: bash -el {0}
+      - name: Test scvelo tutorial (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh {0}
+        run: |
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\bin;' + $env:Path
+          $env:Path = 'C:\Users\runneradmin\.pyenv\pyenv-win\shims;' + $env:Path
+          $env:PYENV = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_ROOT = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          $env:PYENV_HOME = $env:USERPROFILE + '\.pyenv\pyenv-win\'
+          pyenv shell 3.13.5
+          python tests/scvelo/0.3.3.py
 
       # - name: Test scvelo dynamical mode (Unix; scvelo == 0.3.3)
       #   if: runner.os != 'Windows'
