@@ -246,7 +246,7 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           pyenv activate jurassicpark-env
-          pip install --no-cache-dir scvelo==0.3.3
+          python -m pip install scvelo==0.3.3 anndata==0.11.4 scipy==1.15.2 zarr==2.18.7 tqdm ipywidgets
 
       - name: Install scvelo (Windows)
         if: runner.os == 'Windows'
