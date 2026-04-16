@@ -320,20 +320,20 @@ jobs:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
 
-      - name: Check location of test files
-        if: runner.os != 'Windows'
+      - name: Check location of test files (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
         run: |
           pwd
           ls -R
           ls -R /Users/runner/work/jurassicpark/jurassicpark/
-        shell: bash -el {0}
 
-      - name: Test scvelo tutorial (Unix; scvelo == 0.3.3)
-        if: runner.os != 'Windows'
+      - name: Test scvelo tutorial (macOS; scvelo == 0.3.3)
+        if: runner.os == 'macOS'
+        shell: bash
         run: |
           pyenv activate jurassicpark-env
           python tests/scvelo/0.3.3.py
-        shell: bash -el {0}
 
       # - name: Test scvelo dynamical mode (Unix; scvelo == 0.3.3)
       #   if: runner.os != 'Windows'
