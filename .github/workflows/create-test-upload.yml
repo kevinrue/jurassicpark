@@ -323,7 +323,9 @@ jobs:
       - name: Check location of test files
         if: runner.os != 'Windows'
         run: |
+          pwd
           ls -R
+          ls -R /Users/runner/work/jurassicpark/jurassicpark/
         shell: bash -el {0}
 
       - name: Test scvelo tutorial (Unix; scvelo == 0.3.3)
