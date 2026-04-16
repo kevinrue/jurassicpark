@@ -1,0 +1,71 @@
+on:
+  push:
+  pull_request:
+
+name: create-test-upload-windows
+
+jobs:
+  build-check-windows:
+    runs-on: windows-latest
+    name: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install pyenv-win on Windows
+        shell: pwsh {0}
+        run: |
+          Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
+
+      - name: Configure pyenv on Windows
+        shell: pwsh {0}
+        run: |
+          chcp 65001
+          echo ("PYENV=" + $env:USERPROFILE + "\.pyenv\pyenv-win") >> $env:GITHUB_ENV
+          echo ("PYENV_ROOT=" + $env:USERPROFILE + "\.pyenv\pyenv-win") >> $env:GITHUB_ENV
+          echo ("PYENV_HOME=" + $env:USERPROFILE + "\.pyenv\pyenv-win") >> $env:GITHUB_ENV
+          $env:USERPROFILE + "\.pyenv\pyenv-win\shims;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+          $env:USERPROFILE + "\.pyenv\pyenv-win\bin;" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+
+      - name: Verify pyenv on Windows
+        shell: pwsh {0}
+        run: |
+          pyenv --version
+
+      - name: List Python 3.1x versions on Windows
+        shell: pwsh {0}
+        run: |
+          pyenv install -l | findstr 3.1
+
+      - name: Install Python 3.13.5 on Windows
+        shell: pwsh {0}
+        run: |
+          pyenv install 3.13.5
+
+      - name: Install scvelo dependencies on Windows
+        shell: pwsh {0}
+        run: |
+          pyenv shell 3.13.5
+          python -m pip install scvelo==0.3.3 anndata==0.11.4 scipy==1.15.2 zarr==2.18.7 tqdm ipywidgets
+
+      - name: Save installed packages on Windows
+        shell: pwsh {0}
+        run: |
+          New-Item -ItemType Directory -Path outputs -Force | Out-Null
+          pyenv shell 3.13.5
+          python -m pip list --format=freeze | Out-File -FilePath ("outputs/" + $env:RUNNER_OS + "-pyenv.txt") -Encoding utf8
+          Get-Content ("outputs/" + $env:RUNNER_OS + "-pyenv.txt")
+
+      - name: Run scvelo smoke test on Windows
+        shell: pwsh {0}
+        run: |
+          pyenv shell 3.13.5
+          python tests/scvelo/0.3.3.py
+
+      - name: Upload installed packages artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ runner.os }}-pyenv-packages
+          path: outputs/${{ runner.os }}-pyenv.txt
+          if-no-files-found: error

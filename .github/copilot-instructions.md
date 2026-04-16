@@ -7,7 +7,7 @@
 
 ## Canonical Source Of Truth
 
-- Treat `.github/workflows/create-test-upload.yml` as the canonical source for setup, dependency pins, and test commands.
+- Treat `.github/workflows/create-test-upload-ubuntu.yml`, `.github/workflows/create-test-upload-macos.yml`, and `.github/workflows/create-test-upload-windows.yml` as the canonical sources for setup, dependency pins, and test commands.
 - Ignore files under `outputs/` for standards decisions. They are temporary backups, not policy inputs.
 
 ## Dependency Policy
