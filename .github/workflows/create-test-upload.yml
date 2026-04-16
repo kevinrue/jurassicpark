@@ -317,12 +317,12 @@ jobs:
       #     type ~/scvelo.yaml
       #   shell: pwsh {0}
 
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
       - name: Check location of test files (macOS)
         if: runner.os == 'macOS'
-        shell: bash
+        shell: bash -leo pipefail {0}
         run: |
           pwd
           ls -R
@@ -330,7 +330,7 @@ jobs:
 
       - name: Test scvelo tutorial (macOS; scvelo == 0.3.3)
         if: runner.os == 'macOS'
-        shell: bash
+        shell: bash -leo pipefail {0}
         run: |
           pyenv activate jurassicpark-env
           python tests/scvelo/0.3.3.py
