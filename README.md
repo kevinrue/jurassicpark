@@ -12,8 +12,10 @@ This repository creates and tests environments for [velociraptor](https://github
 
 ## Developer setup
 
-Use the GitHub Actions workflow as the source of truth for setup and test commands:
-`.github/workflows/create-test-upload.yml`.
+Use the GitHub Actions workflows as the source of truth for setup and test commands:
+`.github/workflows/create-test-upload-ubuntu.yml`,
+`.github/workflows/create-test-upload-macos.yml`, and
+`.github/workflows/create-test-upload-windows.yml`.
 
 Core pinned dependencies (cross-OS parity target):
 

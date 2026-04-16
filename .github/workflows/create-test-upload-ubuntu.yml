@@ -1,0 +1,109 @@
+on:
+  push:
+  pull_request:
+
+name: create-test-upload-ubuntu
+
+jobs:
+  build-check-ubuntu:
+    runs-on: ubuntu-latest
+    name: ubuntu-latest
+    container: bioconductor/bioconductor_docker:devel
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install pyenv on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          curl -fsSL https://pyenv.run | bash
+
+      - name: Configure pyenv on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+          echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+          echo 'eval "$(pyenv init - bash)"' >> ~/.bash_profile
+
+      - name: Verify pyenv on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv --version
+
+      - name: List Python 3.1x versions on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv install --list | grep " 3\.1[12345]"
+
+      - name: Install Python build dependencies on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          apt update
+          apt-get -yq install \
+            build-essential \
+            pkg-config \
+            ccache \
+            gdb \
+            lcov \
+            libb2-dev \
+            libbz2-dev \
+            libffi-dev \
+            libgdbm-dev \
+            libgdbm-compat-dev \
+            liblzma-dev \
+            libncurses5-dev \
+            libreadline6-dev \
+            libsqlite3-dev \
+            libssl-dev \
+            libzstd-dev \
+            lzma \
+            lzma-dev \
+            strace \
+            tk-dev \
+            uuid-dev \
+            xvfb \
+            zlib1g-dev
+
+      - name: Install Python 3.13.5 on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv install 3.13.5
+
+      - name: Create virtual environment on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv virtualenv 3.13.5 jurassicpark-env
+
+      - name: Verify virtual environment on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv shell jurassicpark-env
+          pyenv virtualenvs
+
+      - name: Install scvelo dependencies on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv activate jurassicpark-env
+          python -m pip install scvelo==0.3.3 anndata==0.11.4 scipy==1.15.2 zarr==2.18.7 tqdm ipywidgets
+
+      - name: Save installed packages on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          mkdir -p outputs
+          pyenv activate jurassicpark-env
+          python -m pip list --format=freeze > "outputs/${RUNNER_OS}-pyenv.txt"
+          cat "outputs/${RUNNER_OS}-pyenv.txt"
+
+      - name: Run scvelo smoke test on Linux
+        shell: bash -leo pipefail {0}
+        run: |
+          pyenv activate jurassicpark-env
+          python tests/scvelo/0.3.3.py
+
+      - name: Upload installed packages artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ runner.os }}-pyenv-packages
+          path: outputs/${{ runner.os }}-pyenv.txt
+          if-no-files-found: error
