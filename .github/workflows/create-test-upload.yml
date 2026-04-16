@@ -320,12 +320,12 @@ jobs:
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
 
-      # - name: Test scvelo tutorial (Unix; scvelo == 0.3.3)
-      #   if: runner.os != 'Windows'
-      #   run: |
-      #     micromamba activate scvelo
-      #     python tests/scvelo/0.3.3.py
-      #   shell: bash -el {0}
+      - name: Test scvelo tutorial (Unix; scvelo == 0.3.3)
+        if: runner.os != 'Windows'
+        run: |
+          pyenv activate jurassicpark-env
+          python tests/scvelo/0.3.3.py
+        shell: bash -el {0}
 
       # - name: Test scvelo dynamical mode (Unix; scvelo == 0.3.3)
       #   if: runner.os != 'Windows'
